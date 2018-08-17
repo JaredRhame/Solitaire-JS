@@ -63,8 +63,8 @@ for(let j = 0; j < suits.length; j++){
 }
 
 deck.shuffle();
-// displayCards(deck);
 deck.forEach(displayCards);
+
 function displayCards(cards) {
 
   let div = document.createElement('div');
@@ -73,23 +73,40 @@ function displayCards(cards) {
   //let icon = document.createElement('i');
   div.classList.add('card');
   // Checks for suit of cards and gives them the right color
-
-  for(let i = 0; i < cards.length; i++){
-    if (cards[i].includes("clubs") || cards[i].includes("spades")){
-      div.style.borderColor = 'black';
-    } else{
-      div.style.borderColor = 'red';
-    }
-    para.textContent = cards[i];
-    console.log(cards[i]);
+  if (cards.includes("clubs") || cards.includes("spades")){
+    div.style.borderColor = 'black';
+  } else{
+    div.style.borderColor = 'red';
   }
+  para.textContent = cards;
+
   div.appendChild(para);
+
 
   let boardPile = Math.floor(Math.random() * 8);
 
-  board[boardPile].appendChild(div);
+  //board[boardPile].appendChild(div);
+  // board.forEach(pileCheck);
+//  board[1].appendChild(div);
+
+  for (var i = 0; i < board.length; i++) {
+    //board[i].appendChild(div);
+    if (board[i].childElementCount < 1) {
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount > 1) {
+      board[i].appendChild(div);
+    }
+  }
+
+
 }
 
-function pileCheck(deck){
+function pileCheck(piles){
 
+  if (!piles.hasChildNodes()) {
+     piles.appendChild(div);
+
+  } else if (piles.childElementCount == 1) {
+    piles.appendChild(div);
+  }
 }
