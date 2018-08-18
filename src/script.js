@@ -15,7 +15,7 @@ const pile7 = document.getElementById('pile-7');
 const suits = ['hearts', 'diamonds', 'spades', 'clubs'];
 const cardValues = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J','Q', 'K'];
 
-let board = [startDeck, pile1, pile2, pile3, pile4, pile5, pile6, pile7];
+let board = [pile1, pile2, pile3, pile4, pile5, pile6, pile7];
 
 let deck = [];
 
@@ -27,11 +27,6 @@ let pile5Arr = deck.slice(10,15);
 let pile6Arr = deck.slice(15,21);
 let pile7Arr = deck.slice(21,28);
 let startArr = deck.slice(28);
-
-function Card(value, suit){
-  this.value = value;
-  this.suit = suit;
-}
 
 //Shuffles the array that's given
 Array.prototype.shuffle = function() {
@@ -63,8 +58,8 @@ for(let j = 0; j < suits.length; j++){
 }
 
 deck.shuffle();
-// displayCards(deck);
 deck.forEach(displayCards);
+
 function displayCards(cards) {
 
   let div = document.createElement('div');
@@ -73,23 +68,41 @@ function displayCards(cards) {
   //let icon = document.createElement('i');
   div.classList.add('card');
   // Checks for suit of cards and gives them the right color
-
-  for(let i = 0; i < cards.length; i++){
-    if (cards[i].includes("clubs") || cards[i].includes("spades")){
-      div.style.borderColor = 'black';
-    } else{
-      div.style.borderColor = 'red';
-    }
-    para.textContent = cards[i];
-    console.log(cards[i]);
+  if (cards.includes("clubs") || cards.includes("spades")){
+    div.style.borderColor = 'black';
+  } else{
+    div.style.borderColor = 'red';
   }
+  para.textContent = cards;
+
   div.appendChild(para);
+
 
   let boardPile = Math.floor(Math.random() * 8);
 
-  board[boardPile].appendChild(div);
-}
+// Checks the amount of cards(children nodes) a pile has and appends a new card if conditions are met. Each pile has a limit to the amount of cards that can be initially added. Any remaining cards go to startDeck
+  for (var i = 0; i < board.length; i++) {
+    if (board[i].hasChildNodes() < 1) {
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 1 && board[i] !== board[0]) {
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 2 && board[i] !== board[0,1]) {
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 3 && board[i] !== board[0,1,2]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 4 && board[i] !== board[0,1,2,3]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 5 && board[i] !== board[0,1,2,3,4]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 6 && board[i] !== board[0,1,2,3,4,5]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 1) {
+      startDeck.appendChild(div);
 
-function pileCheck(deck){
+    }
+  }
 
+  // if (board.hasChildNodes()) {
+  //   startDeck.appendChild(div);
+  // }
 }
