@@ -15,7 +15,7 @@ const pile7 = document.getElementById('pile-7');
 const suits = ['hearts', 'diamonds', 'spades', 'clubs'];
 const cardValues = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J','Q', 'K'];
 
-let board = [startDeck, pile1, pile2, pile3, pile4, pile5, pile6, pile7];
+let board = [pile1, pile2, pile3, pile4, pile5, pile6, pile7];
 
 let deck = [];
 
@@ -27,11 +27,6 @@ let pile5Arr = deck.slice(10,15);
 let pile6Arr = deck.slice(15,21);
 let pile7Arr = deck.slice(21,28);
 let startArr = deck.slice(28);
-
-function Card(value, suit){
-  this.value = value;
-  this.suit = suit;
-}
 
 //Shuffles the array that's given
 Array.prototype.shuffle = function() {
@@ -85,28 +80,29 @@ function displayCards(cards) {
 
   let boardPile = Math.floor(Math.random() * 8);
 
-  //board[boardPile].appendChild(div);
-  // board.forEach(pileCheck);
-//  board[1].appendChild(div);
-
+// Checks the amount of cards(children nodes) a pile has and appends a new card if conditions are met. Each pile has a limit to the amount of cards that can be initially added. Any remaining cards go to startDeck
   for (var i = 0; i < board.length; i++) {
-    //board[i].appendChild(div);
-    if (board[i].childElementCount < 1) {
+    if (board[i].hasChildNodes() < 1) {
       board[i].appendChild(div);
-    }else if (board[i].childElementCount > 1) {
+    }else if (board[i].childElementCount == 1 && board[i] !== board[0]) {
       board[i].appendChild(div);
+    }else if (board[i].childElementCount == 2 && board[i] !== board[0,1]) {
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 3 && board[i] !== board[0,1,2]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 4 && board[i] !== board[0,1,2,3]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 5 && board[i] !== board[0,1,2,3,4]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 6 && board[i] !== board[0,1,2,3,4,5]){
+      board[i].appendChild(div);
+    }else if (board[i].childElementCount == 1) {
+      startDeck.appendChild(div);
+
     }
   }
 
-
-}
-
-function pileCheck(piles){
-
-  if (!piles.hasChildNodes()) {
-     piles.appendChild(div);
-
-  } else if (piles.childElementCount == 1) {
-    piles.appendChild(div);
-  }
+  // if (board.hasChildNodes()) {
+  //   startDeck.appendChild(div);
+  // }
 }
