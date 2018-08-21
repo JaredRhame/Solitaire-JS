@@ -13,7 +13,7 @@
   margin: 25px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 #completed-piles{
@@ -33,12 +33,24 @@
   width: 165px;
   background-color: white;
   border: thick solid;
+  margin-bottom: -170px;
+  cursor: pointer;
+  user-select: none;
 }
 
-#starting-piles div div{
-  display: inline-flex;
+#starting-deck div{
+  position: absolute;
 }
 
-#starting-piles div div[class='card']{
-  margin-top: -170px;
+#starting-piles div div[class='card-pile']{
+  margin-top: 170px;
+}
+
+#viewing-deck{
+  margin-left: -200px;
+}
+
+#playing-board{
+  height: 100vh;
+  width: 100%;
 }
