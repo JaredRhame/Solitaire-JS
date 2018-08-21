@@ -1,4 +1,3 @@
-const myDiv = document.getElementById('my-div');
 const startDeck = document.getElementById('starting-deck');
 const completed1 = document.getElementById('completed-1');
 const completed2 = document.getElementById('completed-2');
@@ -11,6 +10,8 @@ const pile4 = document.getElementById('pile-4');
 const pile5 = document.getElementById('pile-5');
 const pile6 = document.getElementById('pile-6');
 const pile7 = document.getElementById('pile-7');
+let playingBoard =  document.querySelector('#playing-board');
+
 
 const suits = ['hearts', 'diamonds', 'spades', 'clubs'];
 const cardValues = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J','Q', 'K'];
@@ -19,14 +20,13 @@ let board = [pile1, pile2, pile3, pile4, pile5, pile6, pile7];
 
 let deck = [];
 
-let pile1Arr = deck.slice(0,1);
-let pile2Arr = deck.slice(1,3);
-let pile3Arr = deck.slice(3,6);
-let pile4Arr = deck.slice(6,10);
-let pile5Arr = deck.slice(10,15);
-let pile6Arr = deck.slice(15,21);
-let pile7Arr = deck.slice(21,28);
-let startArr = deck.slice(28);
+let active = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+let xOffset = 0;
+let yOffset = 0;
 
 //Shuffles the array that's given
 Array.prototype.shuffle = function() {
@@ -101,8 +101,60 @@ function displayCards(cards) {
 
     }
   }
+}
+//Event handlers for touch (fingers/stylus)
+playingBoard.addEventListener("touchstart", dragStart, false);
+playingBoard.addEventListener("touchend", dragEnd, false);
+playingBoard.addEventListener("touchmove", drag, false);
+//Event handlers for mouse
+playingBoard.addEventListener("mousedown", dragStart, false);
+playingBoard.addEventListener("mouseup", dragEnd, false);
+playingBoard.addEventListener("mousemove", drag, false);
+let playingCards =  document.querySelectorAll('.card');
 
-  // if (board.hasChildNodes()) {
-  //   startDeck.appendChild(div);
-  // }
+function dragStart(e) {
+  //Checks if event was made by touch.
+  if (e.type === "touchstart") {
+    initialX = e.touches[0].clientX - xOffset;
+    initialY = e.touches[0].clientY - yOffset;
+  } else {
+    initialX = e.clientX - xOffset;
+    initialY = e.clientY - yOffset;
+  }
+  //Checks if the event was called on a playing card instead of just the playingBoard
+  //Maybe add an && here for checking if card is face-up
+  if (e.target === board) {
+    active = true;
+    //board[0].lastChild worked. Figure out how to do this witout writing it 100 times, probably a loop?
+  }
+}
+
+function drag(e) {
+  if (active) {
+    if (e.type === "touchmove") {
+      e.preventDefault();
+
+      currentX = e.touches[0].clientX - initialX;
+      currentY = e.touches[0].clientY - initialY;
+    } else {
+      currentX = e.clientX - initialX;
+      currentY = e.clientY - initialY;
+
+    }
+
+    xOffset = currentX;
+    yOffset = currentY;
+
+    setTranslate(currentX, currentY, board);
+  }
+
+}
+function setTranslate(xPos, yPos, el) {
+      el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+    }
+function dragEnd(e) {
+  initialX = currentX;
+  initialY = currentY;
+
+  active = false;
 }
